@@ -76,7 +76,7 @@ const Header = ({ showForm, changeTextAndColor }) => {
 
     return (
         <header className="header text-center">
-            <h2 className="app-header">Quốc Mạnh - ReactJS</h2>
+            <h2 className="app-header">Quốc Mạnh - ReactJS - NextJS</h2>
             <Button onClick={showForm} color="white" text={changeTextAndColor ? 'Close' : 'Add'} />
             
         </header>
