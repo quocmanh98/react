@@ -7,137 +7,182 @@ import { useState, useEffect } from 'react';
 // Importing Packages
 import { v4 as uuidv4 } from 'uuid';
 import Swal from "sweetalert2";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-    // All States
-    const [loading, setloading] = useState(true); // Pre-loader before page renders
-    const [tasks, setTasks] = useState([]); // Task State
-    const [showAddTask, setShowAddTask] = useState(false); // To reveal add task form
+  // All States
+  const [loading, setloading] = useState(true); // Pre-loader before page renders
+  const [tasks, setTasks] = useState([]); // Task State
+  const [showAddTask, setShowAddTask] = useState(false); // To reveal add task form
+  const [editedTask, setEditedTask] = useState({ id: '', text: '', day: '' });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Pre-loader
-    useEffect(() => {
-        setTimeout(() => {
-            setloading(false);
-        }, 3500);
-    }, [])
+  // Pre-loader
+  useEffect(() => {
+    setTimeout(() => {
+      setloading(false);
+    }, 3500);
+  }, [])
 
-    // Fetching from Local Storage
-    const getTasks = JSON.parse(localStorage.getItem("taskAdded"));
+  // Fetching from Local Storage
+  const getTasks = JSON.parse(localStorage.getItem("taskAdded"));
 
-    useEffect(() => {
-        if (getTasks == null) {
-            setTasks([])
-        } else {
-            setTasks(getTasks);
-        }
-        // eslint-disable-next-line
-    }, [])
-
-    // Add Task
-    const addTask = (task) => {
-        const id = uuidv4();
-        const newTask = { id, ...task }
-
-        setTasks([...tasks, newTask]);
-
-        Swal.fire({
-            icon: 'success',
-            title: 'Yay...',
-            text: 'You have successfully added a new task!'
-        })
-
-        localStorage.setItem("taskAdded", JSON.stringify([...tasks, newTask]));
+  useEffect(() => {
+    if (getTasks == null) {
+      setTasks([])
+    } else {
+      setTasks(getTasks);
     }
+    // eslint-disable-next-line
+  }, [])
 
-    // Delete Task
-    const deleteTask = (id) => {
-        const deleteTask = tasks.filter((task) => task.id !== id);
+  // Add Task
+  const addTask = (task) => {
+    const id = uuidv4();
+    const newTask = { id, ...task }
 
-        setTasks(deleteTask);
+    setTasks([...tasks, newTask]);
 
-        Swal.fire({
-            icon: 'success',
-            title: 'Oops...',
-            text: 'You have successfully deleted a task!'
-        })
+    Swal.fire({
+      icon: 'success',
+      title: 'Yay...',
+      text: 'You have successfully added a new task!'
+    })
 
-        localStorage.setItem("taskAdded", JSON.stringify(deleteTask));
-    }
+    localStorage.setItem("taskAdded", JSON.stringify([...tasks, newTask]));
+  }
 
-    // Edit Task
-    const editTask = (id) => {
+  // Delete Task
+  const deleteTask = (id) => {
+    const deleteTask = tasks.filter((task) => task.id !== id);
 
-        const text = prompt("Task Name");
-        const day = prompt("Day and Time");
-        let data = JSON.parse(localStorage.getItem('taskAdded'));
+    setTasks(deleteTask);
 
-        const myData = data.map(x => {
-            if (x.id === id) {
-                return {
-                    ...x,
-                    text: text,
-                    day: day,
-                    id: uuidv4()
-                }
-            }
-            return x;
-        })
+    Swal.fire({
+      icon: 'success',
+      title: 'Oops...',
+      text: 'You have successfully deleted a task!'
+    })
 
-        Swal.fire({
-            icon: 'success',
-            title: 'Yay...',
-            text: 'You have successfully edited an existing task!'
-        })
+    localStorage.setItem("taskAdded", JSON.stringify(deleteTask));
+  }
 
-        localStorage.setItem("taskAdded", JSON.stringify(myData));
-        window.location.reload();
-    }
+  // Edit Task
+  const editTask = (id) => {
+    const taskToEdit = tasks.find(task => task.id === id);
+    setEditedTask(taskToEdit);
+    setIsModalOpen(true);
+  }
 
-    return (
-        <>
-            {
-                loading
-                    ?
-                    <div className="spinnerContainer">
-                        <div className="spinner-grow text-primary" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
-                        <div className="spinner-grow text-secondary" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
-                        <div className="spinner-grow text-success" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
-                        <div className="spinner-grow text-danger" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
-                        <div className="spinner-grow text-warning" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    :
-                    <div className="container">
-                        {/* App Header that has open and App Name */}
-                        <Header showForm={() => setShowAddTask(!showAddTask)} changeTextAndColor={showAddTask} />
+  const saveEditedTask = () => {
+    const updatedTasks = tasks.map(task =>
+      task.id === editedTask.id ? { ...task, text: editedTask.text, day: editedTask.day } : task
+    );
 
-                        {/* Revealing of Add Task Form */}
-                        {showAddTask && <AddTask onSave={addTask} />}
+    setTasks(updatedTasks);
 
-                        {/* Task Counter */}
-                        <h3>Number of Tasks: {tasks.length}</h3>
+    Swal.fire({
+      icon: 'success',
+      title: 'Yay...',
+      text: 'You have successfully edited an existing task!'
+    })
 
-                        {/* Displaying of Tasks */}
-                        {
-                            tasks.length > 0
-                                ?
-                                (<Tasks tasks={tasks} onDelete={deleteTask} onEdit={editTask} />)
-                                :
-                                ('No Task Found!')
-                        }
-                    </div>
-            }
-        </>
-    )
+    localStorage.setItem("taskAdded", JSON.stringify(updatedTasks));
+    setIsModalOpen(false);
+  }
+
+  // Modal Close Function
+  const closeEditModal = () => {
+    setIsModalOpen(false);
+  }
+
+  const modal = (
+    <div className="modal" tabIndex="-1" role="dialog" style={{ display: isModalOpen ? 'block' : 'none' }}>
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Edit Task</h5>
+            <button type="button" className="btn-close" aria-label="Close" onClick={closeEditModal}></button>
+
+          </div>
+          <div className="modal-body">
+            <label htmlFor="taskName">Task Name:</label>
+            <input
+              type="text"
+              id="taskName"
+              className="form-control"
+              value={editedTask.text}
+              onChange={(e) => setEditedTask({ ...editedTask, text: e.target.value })}
+            />
+            <label htmlFor="dayAndTime">Day and Time:</label>
+            <input
+              type="text"
+              id="dayAndTime"
+              className="form-control"
+              value={editedTask.day}
+              onChange={(e) => setEditedTask({ ...editedTask, day: e.target.value })}
+            />
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-primary" onClick={saveEditedTask}>
+              Save changes
+            </button>
+            <button type="button" className="btn btn-secondary" onClick={closeEditModal}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+
+  return (
+    <>
+      {
+        loading
+          ?
+          <div className="spinnerContainer">
+            <div className="spinner-grow text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <div className="spinner-grow text-secondary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <div className="spinner-grow text-success" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <div className="spinner-grow text-danger" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <div className="spinner-grow text-warning" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          :
+          <div className="container">
+            <div className="row">
+              <div className="col">
+                {/* App Header */}
+                <Header showForm={() => setShowAddTask(!showAddTask)} changeTextAndColor={showAddTask} />
+
+                {/* Revealing of Add Task Form */}
+                {showAddTask && <AddTask onSave={addTask} />}
+
+                {/* Task Counter */}
+                <h3>Number of Tasks: {tasks.length}</h3>
+
+                {/* Displaying of Tasks */}
+                {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onEdit={editTask} /> : 'No Task Found!'}
+              </div>
+            </div>
+          </div>
+
+      }
+
+      {modal}
+    </>
+  )
 }
 
 export default App;
