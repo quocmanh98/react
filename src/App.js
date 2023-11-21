@@ -117,7 +117,7 @@ function App() {
             />
             <label htmlFor="dayAndTime">Day and Time:</label>
             <input
-              type="text"
+              type="date"
               id="dayAndTime"
               className="form-control"
               value={editedTask.day}
