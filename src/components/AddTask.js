@@ -50,7 +50,7 @@ const AddTask = ({ onSave }) => {
             <div className="form-group">
                 <label htmlFor="dayTime">Day & Time</label>
                 <input
-                    type="text"
+                    type="date"
                     id="dayTime"
                     className="form-control"
                     placeholder="Add day & time"

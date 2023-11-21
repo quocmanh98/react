@@ -1,4 +1,5 @@
 // Importing Components
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
 import AddTask from './components/AddTask';
@@ -7,7 +8,7 @@ import { useState, useEffect } from 'react';
 // Importing Packages
 import { v4 as uuidv4 } from 'uuid';
 import Swal from "sweetalert2";
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   // All States
