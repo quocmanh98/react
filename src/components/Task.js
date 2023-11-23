@@ -4,12 +4,12 @@ import "../index.css"
 const Task = ({ task, onDelete, onEdit }) => {
     return (
         <div>
-            <div className="task">
+            <div className="task alert alert-secondary">
                 <div>
                     <p className="taskName">
-                        <span className="textBold">Task Name:</span> {task.text}
+                        <span className="textBold">Tên công việc: </span> {task.text}
                     </p>
-                    <p className="taskDate"><span className="textBold">Date of Completion:</span> {task.day}</p>
+                    <p className="taskDate"><span className="textBold">Ngày thực hiện:</span> {task.day}</p>
                 </div>
                 <div>
                     <p><FaTimes onClick={() => onDelete(task.id)} className="delIcon" /></p>

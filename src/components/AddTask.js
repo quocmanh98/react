@@ -37,7 +37,7 @@ const AddTask = ({ onSave }) => {
     return (
         <form className="add-form" onSubmit={onSubmit}>
             <div className="form-group">
-                <label htmlFor="task">Task</label>
+                <label htmlFor="task">Công việc</label>
                 <input
                     type="text"
                     id="task"
@@ -48,7 +48,7 @@ const AddTask = ({ onSave }) => {
                 />
             </div>
             <div className="form-group">
-                <label htmlFor="dayTime">Day & Time</label>
+                <label htmlFor="dayTime">Ngày thực hiện</label>
                 <input
                     type="date"
                     id="dayTime"
@@ -60,7 +60,7 @@ const AddTask = ({ onSave }) => {
             </div>
 
             <button type="submit" className="btn btn-primary btn-block">
-                Save Task
+                Lưu
             </button>
         </form>
     );

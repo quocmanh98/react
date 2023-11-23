@@ -102,12 +102,12 @@ function App() {
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Edit Task</h5>
+            <h5 className="modal-title">Chỉnh sửa công việc</h5>
             <button type="button" className="btn-close" aria-label="Close" onClick={closeEditModal}></button>
 
           </div>
           <div className="modal-body">
-            <label htmlFor="taskName">Task Name:</label>
+            <label htmlFor="taskName">Tên công việc :</label>
             <input
               type="text"
               id="taskName"
@@ -115,7 +115,7 @@ function App() {
               value={editedTask.text}
               onChange={(e) => setEditedTask({ ...editedTask, text: e.target.value })}
             />
-            <label htmlFor="dayAndTime">Day and Time:</label>
+            <label htmlFor="dayAndTime">Ngày và Giờ:</label>
             <input
               type="date"
               id="dayAndTime"
@@ -126,10 +126,10 @@ function App() {
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-primary" onClick={saveEditedTask}>
-              Save changes
+              Lưu
             </button>
             <button type="button" className="btn btn-secondary" onClick={closeEditModal}>
-              Close
+              Thoát
             </button>
           </div>
         </div>
@@ -153,28 +153,25 @@ function App() {
             <div className="spinner-grow text-success" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
-            <div className="spinner-grow text-danger" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-            <div className="spinner-grow text-warning" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
           </div>
           :
           <div className="container">
             <div className="row">
-              <div className="col">
+              <div className="col ">
                 {/* App Header */}
                 <Header showForm={() => setShowAddTask(!showAddTask)} changeTextAndColor={showAddTask} />
 
                 {/* Revealing of Add Task Form */}
                 {showAddTask && <AddTask onSave={addTask} />}
 
-                {/* Task Counter */}
-                <h3>Number of Tasks: {tasks.length}</h3>
+                <div className="alert alert-info">
+                  {/* Task Counter */}
+                  <h3>Số lượng Task: {tasks.length}</h3>
 
-                {/* Displaying of Tasks */}
-                {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onEdit={editTask} /> : 'No Task Found!'}
+                  {/* Displaying of Tasks */}
+                  {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onEdit={editTask} /> : 'Không có Task nào được tìm thấy!'}
+                </div>
+
               </div>
             </div>
           </div>

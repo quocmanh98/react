@@ -40,8 +40,8 @@ const Header = ({ showForm, changeTextAndColor }) => {
     // Show countdown modal when the component renders
     useEffect(() => {
         Swal.fire({
-            title: 'Countdown to Christmas',
-            html: `<p>${countdown.days} days ${countdown.hours} hours ${countdown.minutes} minutes ${countdown.seconds} seconds</p>`,
+            title: ' Quốc Mạnh <br> Đếm ngược: Giáng sinh 2023',
+            html: `<p>${countdown.days} ngày ${countdown.hours} giờ ${countdown.minutes} phút ${countdown.seconds} giây</p>`,
             showConfirmButton: false
         });
 
@@ -75,11 +75,12 @@ const Header = ({ showForm, changeTextAndColor }) => {
     };
 
     return (
-        <header className="header text-center">
-            <h2 className="app-header">Quốc Mạnh - ReactJS - NextJS</h2>
-            <Button onClick={showForm} color="white" text={changeTextAndColor ? 'Close' : 'Add'} />
-            
-        </header>
+        <div className="nestjs">
+            <div className="header text-center d-flex justify-content-center" >
+                <h2 className="app-header">Quốc Mạnh - ReactJS</h2>
+            </div>
+            <Button onClick={showForm} className="btn btn-secondary" color="white" text={changeTextAndColor ? 'Close' : 'Add'} />
+        </div>
     );
 };
 
