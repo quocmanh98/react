@@ -40,7 +40,7 @@ const Header = ({ showForm, changeTextAndColor }) => {
     // Show countdown modal when the component renders
     useEffect(() => {
         Swal.fire({
-            title: ' Quốc Mạnh <br> Đếm ngược: Giáng sinh 2023',
+            title: ' Quốc Mạnh <br> Chúc Mừng Năm Mới 2024',
             html: `<p>${countdown.days} ngày ${countdown.hours} giờ ${countdown.minutes} phút ${countdown.seconds} giây</p>`,
             showConfirmButton: false
         });
